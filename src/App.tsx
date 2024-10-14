@@ -6,7 +6,6 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 
-
 export interface CounterState {
   count: number;
 }
