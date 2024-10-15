@@ -1,3 +1,5 @@
 import App from '@/App'
 
-export const Layout = () =>  <App/>
+export default function Layout () {
+  return  <App/>
+}

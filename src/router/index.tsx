@@ -1,5 +1,5 @@
-import {Layout} from "@/views/Layout";
-import {Login} from "@/views/Login/index";
+import Layout from "@/views/Layout";
+import Login from "@/views/Login/index";
 
 import { createBrowserRouter } from "react-router-dom";
 
