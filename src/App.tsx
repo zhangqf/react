@@ -2,6 +2,8 @@ import { useState } from 'react'
 import Button from '@mui/joy/Button';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import Snackbar from '@mui/joy/Snackbar';
+
 
 import './App.css'
 
@@ -19,11 +21,23 @@ import { inscrement, decrement} from "./store/modules/channlStore"
 
 function App() {
   const [count1, setCount] = useState(0)
+  const [open, setOpen] = useState(true)
   const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
   const { count } = useTypedSelector(state => state.counter);
   const disptch = useDispatch()
   return (
     <>
+    <Snackbar
+        autoHideDuration={3000}
+        open={open}
+        color={'success'}
+        variant={'soft'}
+        size={'md'}
+        onClose={() => setOpen(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        登录成功
+      </Snackbar>
     {/* <LoginFinal/> */}
     <Button variant="solid">Hello world</Button>
       <div>

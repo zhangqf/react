@@ -1,6 +1,6 @@
-import { createSlice, Dispatch, PayloadAction, ThunkAction   } from "@reduxjs/toolkit";
-import { request } from "@/utils/index";
-import { RootState } from '@/store'; // 导入 RootState
+import { createSlice, Dispatch, PayloadAction, ThunkAction, Action   } from "@reduxjs/toolkit";
+import { setToken as _setToken, getToken } from "@/utils/index";
+import { request } from "@/utils/index"
 
 interface LoginFrom {
   user_name: string,
@@ -10,10 +10,11 @@ interface LoginFrom {
 const userStore = createSlice({
   name:'user',
   initialState: {
-    token: ''
+    token: getToken() || ''
   },
   reducers: {
     setToken(state, action:PayloadAction<string>) {
+      _setToken(action.payload),
       state.token = action.payload
     }
   }
@@ -22,11 +23,16 @@ const userStore = createSlice({
 const {setToken } = userStore.actions
 
 const userReducer = userStore.reducer
-// type ThunkResult<R> = ThunkAction<R, RootState, unknown, any>;
-const fetchLogin = (loginForm:LoginFrom): ThunkAction<Promise<void>, unknown, unknown, any> => {
-  return async (dispatch:Dispatch) => {
+
+type UserType = {
+  result: {
+    access_token: string
+  }
+}
+const fetchLogin = (loginForm:LoginFrom): ThunkAction<Promise<void>, {}, null, Action<string>> => {
+  return async (dispatch:Dispatch<any>) => {
    try {
-    const res = await request({
+    const res:UserType = await request({
       url: '/users/login',
       method: "post",
       data: loginForm

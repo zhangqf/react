@@ -3,6 +3,10 @@ import { CssVarsProvider ,useColorScheme } from '@mui/joy/styles';
 import { useDispatch } from 'react-redux';
 
 import { fetchLogin } from '@/store/modules/user';
+import type { RootState, AppDispatch } from '@/store'
+
+import { useNavigate } from 'react-router-dom';
+
 
 import Sheet from '@mui/joy/Sheet';
 import CssBaseline from '@mui/joy/CssBaseline';
@@ -14,8 +18,7 @@ import Button from '@mui/joy/Button';
 import Link from '@mui/joy/Link';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
-
-
+import Snackbar from '@mui/joy/Snackbar';
 
 function ModeToggle() {
   const { mode, setMode } = useColorScheme();
@@ -46,12 +49,18 @@ function ModeToggle() {
   );
 }
 
+
 export default function Login() {
-  const dispatch = useDispatch()
+  const dispatch  = useDispatch<AppDispatch>()
+  
+  const navigate = useNavigate()
+  const [open, setOpen] = useState(false)
   const [email, setEmail] = useState('')
   const [passwd, setPasswd] = useState('')
   const [error, setError] = useState('')
-  const handlerSubmit = () => {
+
+
+  const handlerSubmit = async () => {
     console.log('button')
     if(!email || !passwd){
       setError('用户名和密码不能为空')
@@ -62,15 +71,14 @@ export default function Login() {
       user_name: email,
       password: passwd
     }
-    
-    dispatch(fetchLogin(formdata) as any)
-
-    console.log("Email:", email)
-    console.log("Email:", passwd)
+    await dispatch(fetchLogin(formdata) as any)
+    setOpen(true)
+    navigate('/')
   }
   return (
     <CssVarsProvider>
     <main>
+      
       <ModeToggle />
       <CssBaseline />
       <Sheet
