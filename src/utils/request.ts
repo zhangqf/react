@@ -25,7 +25,28 @@ const methodsType = {
     }
   },
   PUT: () =>{},
-  GET: () =>{},
+  GET: (config:InternalAxiosRequestConfig) =>{
+    const params = config.params || {}
+    let url = config.url + '?'
+    for(const propName of Object.keys(params)) {
+      const value = params[propName]
+      if(value !== void 0 && value !== null && typeof value !== 'undefined' ) {
+        if(typeof value === 'object') {
+          for(const val of Object.keys(value)) {
+            const params = propName + '[' + val+ ']'
+            const subPart = encodeURIComponent(params) + '='
+            url+= subPart + encodeURIComponent(value[val]) + '&'
+          }
+        } else {
+          url +=`${propName}=${encodeURIComponent(value)}&`
+        }
+      }
+    }
+    /* 去掉最后一个字符 &  */
+    url = url.slice(0, -1)
+    config.params = {}
+    config.url = url
+  },
   DELETE: () =>{}
 }
 
@@ -47,8 +68,6 @@ request.interceptors.request.use((config:InternalAxiosRequestConfig) => {
   if (type && type in methodsType) {
     methodsType[type](config); // 调用相应的方法
   }
-
-
 
 
 
