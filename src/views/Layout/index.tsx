@@ -1,7 +1,7 @@
 import Header from './modules/Header'
 import { Stack } from '@mui/joy';
 import Navigate from './modules/Navigate';
-import Article from './modules/Article';
+import { Outlet } from 'react-router-dom';
 export default function Layout () {
   return  (
     <Stack
@@ -16,7 +16,9 @@ export default function Layout () {
     sx={{ width: "100%"}}
     >
       <Stack><Navigate/></Stack>
-      <Stack><Article/></Stack>
+      <Stack>
+        <Outlet></Outlet>
+      </Stack>
     </Stack>
   </Stack>
   )
